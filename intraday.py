@@ -9,21 +9,21 @@ PROTOCOL = 'http://'
 BASE_URL = 'www.google.com/finance/getprices'
 
 
-def get_google_data(symbol, interval_s=60, lookback_d=15, end_time=time.time()):
+def get_google_data(symbol, interval=60, lookback=1, end_time=time.time()):
     """
     Get intraday data for the symbol from google finance and
     return a pandas DataFrame
     :param symbol (str)
-    :param interval_s (int)
-    :param lookback_d (int)
+    :param interval (int)
+    :param lookback (int)
     :param end_time (unix timestamp)
     :returns pandas.DataFrame
     """
     resource_url = PROTOCOL + BASE_URL
     payload = {
         'q': symbol,
-        'i': str(interval_s),
-        'p': str(lookback_d) + 'd',
+        'i': str(interval),
+        'p': str(lookback) + 'd',
         'ts': str(int(end_time * 1000)),
         'f': 'd,o,h,l,c,v'
     }
@@ -48,7 +48,7 @@ def get_google_data(symbol, interval_s=60, lookback_d=15, end_time=time.time()):
             if not timestamp_start and not timestamp_offset:
                 continue
 
-            timestamp = timestamp_start + datetime.timedelta(seconds=timestamp_offset * interval_s)
+            timestamp = timestamp_start + datetime.timedelta(seconds=timestamp_offset * interval)
             close = float(row[1])
             high = float(row[2])
             low = float(row[3])
