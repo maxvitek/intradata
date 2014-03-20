@@ -1,5 +1,5 @@
-intraday
-========
+intradata
+=========
 
 A python module for getting intraday data
 from Google Finance.  Returns a pandas dataframe.
