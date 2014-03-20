@@ -49,13 +49,13 @@ def get_google_data(symbol, interval=60, lookback=1, end_time=time.time()):
                 continue
 
             timestamp = timestamp_start + datetime.timedelta(seconds=timestamp_offset * interval)
-            close = float(row[1])
-            high = float(row[2])
-            low = float(row[3])
-            open = float(row[4])
+            closing_price = float(row[1])
+            high_price = float(row[2])
+            low_price = float(row[3])
+            open_price = float(row[4])
             volume = float(row[5])
 
-            quotes.append((timestamp, close, high, low, open, volume))
+            quotes.append((timestamp, closing_price, high_price, low_price, open_price, volume))
 
     df = pandas.DataFrame(quotes, columns=['datetime', 'close', 'high', 'low', 'open', 'volume'])
     df = df.set_index('datetime')
