@@ -9,6 +9,9 @@ Usage
 
 .. code-block:: pycon
 
+    >>> from intradata import get_google_data
+    >>> aapl = get_google_data('AAPL')
+
     >>> from intraday import get_google_data
     >>> aapl = get_google_data('AAPL')
 
