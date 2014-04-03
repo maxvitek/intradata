@@ -40,7 +40,7 @@ def get_google_data(symbol, interval=60, lookback=1, end_time=time.time()):
         timezone_offset = 0
         for row in quote_reader:
             if row[0][:16] == 'TIMEZONE_OFFSET=':
-                timezone_offset = int(row[0][16:])
+                timezone_offset = -1 * int(row[0][16:])
             elif row[0][0] not in 'a1234567890':  # discard headers
                 continue
             elif row[0][0] == 'a':  # 'a' prepended to the timestamp that starts each day
