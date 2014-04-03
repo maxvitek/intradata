@@ -4,6 +4,7 @@ import pandas
 import requests
 import csv
 import io
+import pytz
 
 PROTOCOL = 'http://'
 BASE_URL = 'www.google.com/finance/getprices'
@@ -36,11 +37,15 @@ def get_google_data(symbol, interval=60, lookback=1, end_time=time.time()):
         quote_reader = csv.reader(csvfile)
         timestamp_start = None
         timestamp_offset = None
+        timezone_offset = 0
         for row in quote_reader:
-            if row[0][0] not in 'a1234567890':  # discard headers
+            if row[0][:16] == 'TIMEZONE_OFFSET=':
+                timezone_offset = int(row[0][16:])
+            elif row[0][0] not in 'a1234567890':  # discard headers
                 continue
             elif row[0][0] == 'a':  # 'a' prepended to the timestamp that starts each day
-                timestamp_start = datetime.datetime.fromtimestamp(float(row[0][1:]))
+                timestamp_start = pytz.utc.localize(datetime.datetime.fromtimestamp(float(row[0][1:]))
+                                                    + datetime.timedelta(minutes=timezone_offset))
                 timestamp_offset = 0
             elif timestamp_start:
                 timestamp_offset = int(row[0])
